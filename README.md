@@ -19,7 +19,6 @@ Este projeto implementa um processo ETL (Extract, Transform, Load) utilizando Py
 ## ⚙️ Pré-requisitos
 ```bash
 pip install requests
-pip install pandas
 ```
 
 ## 📦 Estrutura do Projeto
