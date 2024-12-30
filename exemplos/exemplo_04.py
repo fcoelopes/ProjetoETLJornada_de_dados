@@ -1,21 +1,32 @@
 import requests
 import time
+import logfire
 
-CURRENCY = "USD"
-criptomoeda = ["XRP"]
+CURRENCY = "BRL"
+criptomoeda = ["SOL"]
 
 def get_price(criptomoeda):
     prices = {}
 
-    for criptomoeda in criptomoeda:
-        url = f"https://api.coinbase.com/v2/prices/{criptomoeda}-{CURRENCY}/buy"
-        response = requests.get(url)
-        prices[criptomoeda] = response.json()
-        timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    return {
-        "prices": prices,
-        "timestamp": timestamp
-    }
+    try:
+        for criptomoeda in criptomoeda:
+            url = f"https://api.coinbase.com/v2/prices/{criptomoeda}-{CURRENCY}/buy"
+            prices[criptomoeda] = requests.get(url).json()["data"]["amount"]
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        return {
+            "prices": prices,
+            "timestamp": timestamp
+        }
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao fazer requisição: {e}")
+        return None
+
+def transform_data(data):
+    return data
 
 
-print(get_price(criptomoeda))
+if __name__ == "__main__":
+    #logfire.log("Iniciando a aplicação", "INFO")
+    data = get_price(criptomoeda)
+    print(data)
